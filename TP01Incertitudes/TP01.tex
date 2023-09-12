@@ -1,0 +1,368 @@
+\documentclass[12pt]{book}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphics}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage[dvips]{color}
+\usepackage{textcomp}
+\usepackage{enumitem}
+
+\input{/home/moi/travail/macrotex/macros}
+
+\coursbook%fra
+\pagestyle{empty}
+\begin{document}
+\LARGE
+\begin{center}
+{\bf  T.P. \no 1 : modélisation d'un générateur basse fréquence} 
+\end{center}
+\normalsize
+\vskip1.5cm
+
+\paragraph{Objectifs} \begin{itemize}
+\bitem Mesures de tensions et de résistances réalisées au multimètre. 
+\bitem Mettre en application les méthodes vues en MPSI/MP2I et décrites dans le
+poly de rappels de métrologie : \begin{itemize}
+\item évaluations de type B d'incertitudes-types ;
+\item évaluations d'incertitudes-types composées ;
+\item comparaison des estimations d'une même grandeur avec l'écart normalisé ; 
+\item réalisation d'une régression linéaire ;
+\item écriture du résultat d'une mesure de manière adaptée.
+\end{itemize}
+\end{itemize}
+
+\section{Modèle de Thévenin}
+\begin{minipage}{0.51\linewidth}
+Un générateur basse fréquence est souvent modélisé par un générateur linéaire
+(représenté ci-contre), constitué de l'association en série d'un générateur
+idéal de tension de f.e.m. $e(t)$ et d'une résistance de sortie notée $r_s$ dans
+la suite.
+\end{minipage}\hfill
+\begin{minipage}{0.45\linewidth}
+\setlength{\unitlength}{0.5cm}
+\begin{center}
+\begin{picture}(11,7)
+\put(3,1){\line(1,0){8}}
+\put(3,1){\line(0,-1){0.5}}
+\put(2,0.5){\line(1,0){2}}
+\qbezier(2,0),(2.2,0.2),(2.5,0.5)
+\qbezier(2.5,0),(2.7,0.2),(3,0.5)
+\qbezier(3,0),(3.2,0.2),(3.5,0.5)
+\qbezier(3.5,0),(3.7,0.2),(4,0.5)
+\put(3,6){\line(1,0){2}}
+\put(9,6){\line(1,0){2}}
+\put(5,7){\line(1,0){4}}
+\put(5,5){\line(1,0){4}}
+\put(5,5){\line(0,1){2}}
+\put(9,5){\line(0,1){2}}
+\put(3,1){\line(0,1){5}}
+\put(3,3.5){\circle{2}}
+\put(1.5,2){\vector(0,1){3}}
+\put(0,3.3){$e(t)$}
+\put(6.8,4.3){$r_s$}
+\end{picture}
+\end{center}
+\end{minipage}
+
+\paragraph{Problématique} \
+Estimer $r_s$ et la valeur efficace de $e(t)$.
+
+\
+
+Le dispositif de mesure est représenté ci-dessous : il sera obtenu en branchant
+la boîte de résistances et le multimètre sur la sortie du GBF. L'ouverture du
+circuit à la hauteur de l'interrupteur K est réalisé en débranchant un des fils
+connecté à la boîte de résistances. 
+\setlength{\unitlength}{0.5cm}
+\begin{center}
+\begin{picture}(16,10)
+\put(3,1){\line(1,0){12}}
+\put(3,1){\line(0,-1){0.5}}
+\put(2,0.5){\line(1,0){2}}
+\qbezier(2,0),(2.2,0.2),(2.5,0.5)
+\qbezier(2.5,0),(2.7,0.2),(3,0.5)
+\qbezier(3,0),(3.2,0.2),(3.5,0.5)
+\qbezier(3.5,0),(3.7,0.2),(4,0.5)
+\put(3,9){\line(1,0){2}}
+\put(9,9){\line(1,0){3}}
+\put(12,9){\line(4,1){2}}
+\put(14,9){\line(1,0){1}}
+\put(5,10){\line(1,0){4}}
+\put(5,8){\line(1,0){4}}
+\put(5,8){\line(0,1){2}}
+\put(9,8){\line(0,1){2}}
+\put(3,1){\line(0,1){8}}
+\put(15,1){\line(0,1){2}}
+\put(15,7){\line(0,1){2}}
+\put(14,3){\line(0,1){4}}
+\put(16,3){\line(0,1){4}}
+\put(14,3){\line(1,0){2}}
+\put(14,7){\line(1,0){2}}
+\put(3,5){\circle{2}}
+\put(11,1){\line(0,1){3}}
+\put(11,9){\line(0,-1){3}}
+\put(11,5){\circle{2}}
+\put(1.5,2.5){\vector(0,1){5}}
+\put(9.5,2.5){\vector(0,1){5}}
+\put(0,4.8){$e(t)$}
+\put(8.7,4.8){$u$}
+\put(13.1,4.8){$R$}
+\put(10.7,4.8){V}
+\put(12.7,8.2){K}
+\put(6.8,7.3){$r_s$}
+\end{picture}
+\end{center}
+Dans l'ensemble du TP, l'impédance d'entrée du voltmètre est supposée infinie
+de sorte que le courant le traversant est nul.
+
+\paragraph{Préparation}\
+Exprimer $u$ en fonction de $e$, $r_s$ et $R$ quand :\begin{itemize}
+\bitem le circuit est ouvert ;
+\bitem le circuit est fermé. 
+\end{itemize}
+En quoi le dispositif permet-il de mesurer $E_{eff}$ et $r_s$ ?
+
+
+\
+
+\vert{Quand le circuit est ouvert, loi des mailles
+$$u=e-r_si=e\ ,$$
+car le courant est nul. Par conséquent, au voltmètre, on mesure $U_{eff}=E_{eff}$.
+}
+
+\
+
+\vert{Quand le circuit est fermé, diviseur de tension 
+$$u=e\frac{R}{R+r_s}=\frac{e}{1+\frac{r_s}{R}}\ ,$$
+donc
+$$1+\frac{r_s}{R}=\frac{e}{u}=\frac{E_{eff}}{U_{eff}}\ .$$
+La mesure de $U_{eff}$ au voltmètre donne accès à $r_s$ connaissant $R$.}
+
+\
+
+\section{Premières manipulations}
+Régler le générateur basse fréquence de manière à délivrer une tension
+sinusoïdale $e(t)$ de valeur efficace (RMS) $E_{eff}=1\vi8\mbox{ V}$ et de
+fréquence 50 Hz, sans terme constant. 
+
+\begin{enumerate}
+\item Déterminer expérimentalement la tension $E_{eff}$ et son incertitude
+$u(E_{eff})$ à l'aide de la notice fournie. 
+
+\
+
+\vert{On mesure $E_{eff}=1\vi808 $ V}
+
+\
+
+\vert{A l'aide de la notice (tension alternative), on calcule
+$$u(E_{eff})=\frac{1}{\sqrt3} \times (0\vi015 E_{eff}+0\vi001)=0\vi016 \mbox{ V}$$ et on écrit 
+$$E_{eff}= 1\vi808\mbox{ V} \quad ; \quad u(E_{eff})=0\vi016\mbox{ V} \ .$$
+On calcule l'écart normalisé
+$$\frac{E_{eff}-1\vi8}{u(E_{eff})} = 0\vi5\ :$$
+on en conclut que le réglage du générateur semble correct.}
+
+\
+
+\item Pour les valeurs données dans le tableau ci-dessous, mesurer la résistance
+de la boîte de résistance \underbar{sur le même calibre 200 $\Omega$} et
+compléter le tableau.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$R\mbox{ (en  $\Omega$)}$ & $\ 20\ $ & $\ 30\ $ & $\ 40\ $ & $\ 50\ $ & $\ 60\ $ & $\ 70\ $ & $\ 80\ $ & $\ 90\ $ & $\ 100\ $ \\
+\hline
+Mesure (en $\Omega$) & \vert{19,3} & \vert{29,2} & \vert{39,1} & \vert{49,0}& \vert{58,9} & \vert{68,8} & \vert{78,6} & \vert{88,4} & \vert{98,3}\\
+\hline
+\end{tabular}
+\end{center}
+Pour le calcul des incertitudes, démarrer Spyder, ouvrir le programme
+MP01Etd.py, compléter la cellule \no 2 avec les valeurs de $R$ dans le tableau
+numpy et la formule permettant de calculer $u(R)$ dans la fonction {\bf u1}.
+Exécuter les deux premières cellules.
+\end{enumerate}  
+
+
+\section{Première estimation de $r_s$}
+\begin{enumerate}[resume]
+\item Constituer le montage expérimental avec $R=50\mbox{ $\Omega$}$.
+\item Mesurer la tension $U_{eff}$ au voltmètre et estimer son incertitude
+$u(U_{eff})$ avec la notice.
+
+\
+
+\vert{On trouve
+$$ U_{eff}=0\vi8950   \mbox{ V\ ;\  } u(U_{eff})=0\vi0083  \mbox{ V\ .}$$}
+
+\
+
+\item En exploitant la préparation, estimer la valeur de $r_s$.
+
+\
+  
+\vert{On trouve
+$$r_s=R\left(\frac{E_{eff}}{U_{eff}}-1\right)=49\vi98   \mbox{ $\Omega$\ .}$$}
+
+\
+
+\end{enumerate}
+La relation exprimant $r_s$ en fonction de $E_{eff}$ ne permet pas de
+calculer simplement $u(r_s)$. On utilise alors une simulation de type
+Monte Carlo pour estimer cette incertitude.
+
+
+\begin{enumerate}[resume]\item
+Compléter alors les fonction {\bf u2} et {\bf u3} dans la cellule \no 3 du
+programme afin de d'obtenir $u(r_s)$. La fonction {\bf u2} est l'équivalent de
+{\bf u1} pour les tensions. La fonction {\bf u3} prend comme paramètre $U$, $R$,
+$E$ et renvoie le tableau {\sf tab\_rs} des valeurs de $r_s$, ainsi que sa
+moyenne {\sf mrs} et son écart-type {\sf ers}.
+
+Toutes les grandeurs mesurées seront assimilées à des variables aléatoires
+normales. On utilisera les fonctions suivantes :
+\begin{itemize} 
+\bitem {\it np.random.normal(m,s)} qui reçoit comme paramètre la valeur
+moyenne m et l'écart-type s de la distribution de probabilité et retourne une
+valeur aléatoire  ;
+\bitem {\it statistics.mean(x)} qui prend comme paramètre un tableau de
+valeurs et en retourne la valeur moyenne ; 
+\bitem {\it statistics.pstdev(x)} qui prend comme paramètre un tableau de
+valeurs et en retourne l'écart-type. 
+\end{itemize}
+Exécuter la cellule \no 3 et écrire les résultats sous forme normalisée.
+Comparer avec l'estimation précédente.
+
+\
+
+\vert{On obtient 
+$$r_s= 50\vi04\mbox{ $\Omega$} \quad ; \quad u(r_s)=1\vi4\mbox{ $\Omega$} \ .$$
+On calcule ensuite l'écart normalisé
+$$\frac{\Delta r_s}{u(r_s)} = 0\vi04\ $$
+et on en conclut que les deux mesures sont cohérentes.}
+
+\
+
+\end{enumerate}
+
+
+\section{Exploitation d'une régression linéaire}
+
+\subsection{Estimation de $r_s$}
+
+\begin{enumerate}[resume]
+\item Pour chacune des valeurs de $R$ du tableau du 2., mesurer $U_{eff}$ au
+voltmètre en restant \underbar{sur le même calibre 2 V}.  
+\item Compléter la cellule \no 4 en remplissant le tableau {\sf abs\_Ueff} de
+valeur de $U_{eff}$ et en affectant sa valeur à la variable {\sf E\_eff}.
+
+Exécuter la cellule, ce qui permet de représenter $R$ en fonction de
+$\frac{U_{eff}}{E_{eff}-U_{eff}}$. En quoi une régression linéaire permet
+d'estimer $r_s$ ? Commenter la représentation obtenue.
+
+\
+
+\vert{Comme
+$$E_{eff}/U_{eff}=1+\frac{r_s}{R}\ ,$$
+la représentation de $E_{eff}/U_{eff}$ en fonction de $1/R$ est une droite de
+pente $r_s$ et d'ordonnée à l'origine égale à l'unité.}
+
+\
+
+\vert{Les différents points semblent alignés : le modèle semble correct.}
+\end{enumerate}
+
+Comme la valeur de l'ordonnée à l'origine est imposée par le modèle, il n'est
+pas possible d'utiliser la fonction {\it np.polyfit} pour réaliser la
+régression linéaire.
+
+\
+
+Si on applique la méthode des moindres carrés à un ensemble de points ($y_k$,
+$x_k$) que l'on essaie d'ajuster par une droite de la forme $y=ax$, on doit
+minimiser la somme
+$$S=\sum_{k=1}^N(y_k-ax_k)^2\ .$$
+On cherche alors la valeur de $a$ qui annule
+$$\frac{\df S}{\df a}= \sum_{k=1}^N2(y_k-ax_k)(-x_k)=2\left(a\sum_{k=1}^Nx_k^2-\sum_{k=1}^Nx_ky_k\right)\ , $$
+ce qui conduit
+$$a=\frac{\sum_{k=1}^Nx_ky_k}{\sum_{k=1}^Nx_k^2}\ .$$
+\begin{enumerate}[resume] 
+\item Compléter la cellule \no 5 en achevant la fonction {\bf regression} qui
+reçoit les tableaux numpy en abscisses et en ordonnés et retourne la pente
+du meilleur modèle linéaire. Calculer alors les résidus.
+
+Pour l'ensemble de ces calculs, privilégier les opérations sur les tableaux
+numpy et utiliser la fonction {\it np.sum} qui effectue la somme des éléments
+d'un tableau.
+
+Exécuter la cellule \no 5 pour représenter les résidus. Commenter.
+
+\
+
+\vert{On trouve $r_s=49\vi91\mbox{ $\Omega$}$. Les résidus sont distribués
+aléatoirement, mais semblent un peu faibles. Incertitudes surestimées ?}
+
+\
+
+\item Compléter la cellule \no 6 en calculant les écarts normalisés, puis
+l'exécuter pour représenter ces écarts normalisés. Commenter.
+
+\
+
+\vert{Distribution pas aléatoire + sous estimation des incertitudes : pb avec
+la notice ?}
+
+\
+
+\end{enumerate}
+Il n'est pas nécessaire de représenter à la fois les résidus et les écarts
+nomalisés.
+
+\subsection{Estimation de $u(r_s)$}
+La régression ne permet pas d'estimer l'incertitude $u(r_s)$. De plus, les
+incertitudes sur $E_{eff}$ et $U_{eff}$ n'ont pas été prises en compte. On réalise
+alors $N$ simulations Monte Carlo d'estimations de $r_s$
+
+\begin{enumerate}[resume] 
+\item Compléter la cellule \no 7 en achevant la rédaction de la fonction de
+{\bf incertitudesRegression} qui prend comme paramètres le tableau de valeurs
+de $U_{eff}$, la valeur de $E_{eff}$ et le tableau de valeurs de $R$, et
+qui renvoie le tableau {\sf tab\_rs} des valeurs de $r_s$, ainsi que sa
+moyenne {\sf mrs} et son écart-type {\sf ers}.
+
+On s'inspirera de la fonction {\bf u3} et on réemploiera les fonctions
+{\bf Abscisses} et {\bf regression}.
+
+Exécuter la cellule \no 7. Ecrire les résultats sous forme normalisée et
+comparer aux résultats du 6.
+
+\
+
+\vert{On obtient 
+$$r_s=49\vi9 \mbox{ $\Omega$} \quad ; \quad u'(r_s)=1\vi3\mbox{ $\Omega$} \ .$$
+On calcule ensuite l'écart normalisé
+$$\frac{\Delta r_s}{\sqrt{u(r_s)^2+u'(r_s)^2}} = 0\vi02\ $$
+et on en conclut que les mesures sont cohérentes, la seconde donnant une
+incertitude plus faible.}
+
+\
+
+
+\item Question subsidaire : trouver dans la notice la résistance d'entrée du
+voltmètre et montrer qu'elle ne perturbe pas les mesures.
+\end{enumerate}
+
+
+
+\newpage
+
+\section*{Matériel du TP \no 1 : paramètre d'un générateur de Thévenin}
+
+\
+
+Salle d'électronique : pour chaque binôme, un multimètre rouge avec notice,
+une boîte de résistances x 10 $\Omega$, fils, GBF. 
+ 
+\end{document}
